@@ -38,7 +38,9 @@ private:
     void initModels();
     void initCamera();
     void initFOVProjection();
+    
     void disableVSync();
+    void preTransformModels();
 
     void gameLoop();
 
