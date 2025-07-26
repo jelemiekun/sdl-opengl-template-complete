@@ -109,6 +109,10 @@ void Game::disableVSync() {
     SDL_GL_SetSwapInterval(0);
 }
 
+void Game::preTransformModels() {
+    // Pretransform models  here;
+}
+
 void Game::initializeEverything() {
     spdlog::info("Initializing program...");
 
