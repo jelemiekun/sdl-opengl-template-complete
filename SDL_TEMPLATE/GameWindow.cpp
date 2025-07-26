@@ -155,16 +155,16 @@ void GameWindow::render() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
     Shader* shaderObject = &ProgramValues::Shaders::shaderObject;
-    Model* landscape = &ProgramValues::GameObjects::cube;
+    Model* cube = &ProgramValues::GameObjects::cube;
 
-    landscape->model = glm::translate(landscape->model, glm::vec3(0.0f, 0.0f, -2.0f));
+    // Transform models in pretransform or in imgui
+    cube->translation = glm::vec3(10.0f, 5.0f, 0.0f);
     shaderObject->setFloat("material.shininess", 32.0f);
-    ProgramValues::GameObjects::cube.Draw(*shaderObject, landscape->model);
-    landscape->model = glm::mat4(1.0f);
+    cube->Draw(*shaderObject);
  
     shaderObject->setMat4("u_Projection", ProgramValues::GameWindow::projection);
     shaderObject->setMat4("u_View", ProgramValues::Cameras::freeFly.getViewMatrix());
-    shaderObject->setMat3("u_NormalMatrix", landscape->getNormalMatrix());
+    shaderObject->setMat3("u_NormalMatrix", cube->getNormalMatrix());
 
     game->imGuiWindow->render();
     SDL_GL_SwapWindow(mWindow);

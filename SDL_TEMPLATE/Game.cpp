@@ -111,6 +111,7 @@ void Game::disableVSync() {
 
 void Game::preTransformModels() {
     // Pretransform models  here;
+    ProgramValues::GameObjects::cube.scale = 10.f;
 }
 
 void Game::initializeEverything() {
