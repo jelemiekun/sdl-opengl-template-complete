@@ -1,7 +1,39 @@
+#include <glm/gtc/matrix_transform.hpp>
 #include "ProgramValues.h"
+#include "Model.h"
+#include "Shader.h"
+#include "Camera.h"
 
 namespace ProgramValues {
-	namespace KeyEvents {
+	namespace GameWindow {
+		glm::mat4 projection = glm::perspective(
+			glm::radians(0.0f),
+			(float)1 / (float)1,
+			0.0f,
+			0.0f
+		);
+
+		int width = 1080;
+		int height = 720;
+		int FPS_LIMIT = 60;
+		int FPS = 0;
+		float deltaTime = 0.0f;
+	}
+
+	namespace Shaders {
+		Shader shaderObject;
+		Shader shaderLight;
+	}
+
+	namespace Cameras {
+		Camera freeFly;
+	}
+
+	namespace GameObjects {
+		Model landscape;
+	}
+
+	namespace CameraKeyEvents {
 		bool isLockedIn = true;
 		bool isLockedInPressed = false;
 		bool moveForwardPressed = false;
@@ -14,18 +46,12 @@ namespace ProgramValues {
 		bool fastZoom = false;
 	}
 
-	namespace LightSource {
-		glm::vec3 ambient = glm::vec3(0.2f);
-		glm::vec3 diffuse = glm::vec3(0.5f);
-		glm::vec3 specular = glm::vec3(1.0f);
-		glm::vec3 color = glm::vec3(1.0f);
-		glm::vec3 position = { 1.0f, 0.3f, 0.5f };
-		glm::vec3 scale = glm::vec3(1.0f);
-		glm::vec3 rotate = glm::vec3(1.0f);
-		int rotateDegrees = 0.0f;
-	}
-
-	namespace Object {
-		int shininess = 1.0f;
+	namespace Lights {
+		DirLight sun = {
+			glm::vec3(0.2f, -1.0f, 0.0f),
+			glm::vec3(0.2f),
+			glm::vec3(0.4f),
+			glm::vec3(0.6f)
+		};
 	}
 }

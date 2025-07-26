@@ -6,7 +6,13 @@
 #include <string>
 #include <glm/gtc/type_ptr.hpp>
 
-Shader::Shader(const char* sourcePath) : usable(false) {
+Shader::Shader() : usable(false) {}
+
+Shader::~Shader() {
+	glDeleteProgram(ID);
+}
+
+void Shader::init(const char* sourcePath) {
 	std::string vertexShaderSource = parseShaderSource(sourcePath, Shader_Type::Vertex);
 	std::string fragmentShaderSource = parseShaderSource(sourcePath, Shader_Type::Fragment);
 
@@ -21,10 +27,6 @@ Shader::Shader(const char* sourcePath) : usable(false) {
 	}
 
 	createProgram(vertexShader, fragmentShader);
-}
-
-Shader::~Shader() {
-	glDeleteProgram(ID);
 }
 
 std::string Shader::parseShaderSource(const char* sourcePath, Shader_Type type) {

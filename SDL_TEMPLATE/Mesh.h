@@ -27,7 +27,7 @@ public:
 	std::vector<Texture> textures;
 	glm::mat4 transform;
 	Mesh(std::vector<Vertex> verts, std::vector<unsigned int> inds, std::vector<Texture> texs);
-	void Draw(Shader& shader, const glm::mat4& model);
+	void Draw(Shader& shader, glm::mat4& model);
 
 private:
 	unsigned int vao, vbo, ebo;

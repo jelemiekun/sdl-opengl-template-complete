@@ -1,8 +1,67 @@
 #pragma once
 #include <glm/gtc/matrix_transform.hpp>
 
+class ImGuiWindow;
+class Camera;
+class Model;
+class Shader;
+
 namespace ProgramValues {
-	namespace KeyEvents {
+	struct DirLight {
+		glm::vec3 direction;
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
+	};
+
+	struct PointLight {
+		glm::vec3 position;
+		float constant;
+		float linear;
+		float quadratic;
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
+	};
+
+	struct SpotLight {
+		glm::vec3 position;
+		glm::vec3 direction;
+		float innerCutoff;
+		float outerCutoff;
+		float constant;
+		float linear;
+		float quadratic;
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
+	};
+
+	namespace GameWindow {
+		extern glm::mat4 projection;
+		extern int width;
+		extern int height;
+		extern int FPS_LIMIT;
+		extern int FPS;
+		extern float deltaTime;
+	}
+
+	namespace Shaders {
+		extern Shader shaderObject;
+		extern Shader shaderLight;
+	}
+
+	namespace Cameras {
+		// TODO: use camera reference
+		extern Camera freeFly;
+
+	}
+
+	namespace GameObjects {
+		extern Model landscape;
+	}
+
+	namespace CameraKeyEvents {
 		extern bool isLockedIn;
 		extern bool isLockedInPressed;
 		extern bool moveForwardPressed;
@@ -15,19 +74,7 @@ namespace ProgramValues {
 		extern bool fastZoom;
 	}
 
-	namespace LightSource {
-		extern glm::vec3 ambient;
-		extern glm::vec3 diffuse;
-		extern glm::vec3 specular;
-		extern glm::vec3 color;
-		extern glm::vec3 position;
-		extern glm::vec3 scale;
-		extern glm::vec3 rotate;
-		extern int rotateDegrees;
-	}
-
-	namespace Object {
-		extern int shininess;
+	namespace Lights {
+		extern DirLight sun;
 	}
 };
-

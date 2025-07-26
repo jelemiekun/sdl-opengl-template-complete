@@ -27,9 +27,10 @@ private:
 public:
 	GLuint ID;
 
-	Shader(const char* sourcePath);
+	Shader();
 	~Shader();
 
+	void init(const char* sourcePath);
 	void use() const;
 	void bind() const;
 	void unbind() const;

@@ -25,20 +25,20 @@ public:
     float sensitivity;
     float fov = 45.0f;
 
-    Camera(glm::vec3 startPosition, glm::vec3 startUp,
-        float startYaw, float startPitch);
+    Camera();
 
     glm::mat4 getViewMatrix() const;
 
-    void processKeyboard(SDL_Event& event, GameWindow* window);
+    void init(glm::vec3 startPosition, glm::vec3 startUp,
+        float startYaw, float startPitch);
 
-    void processMouseMotion(SDL_Event& event);
+    void processInput(SDL_Event& event, GameWindow* window);
 
     void setViewToShader(GLuint shaderID, const std::string& uniformName) const;
 
     void update();
-
-    float getFOV() const;
 private:
     void updateCameraVectors();
+    void processKeyboard(SDL_Event& event, GameWindow* window);
+    void processMouseMotion(SDL_Event& event);
 };

@@ -3,31 +3,19 @@
 
 class GameWindow {
 public:
-    // Constructor and Destructor
     GameWindow();
     ~GameWindow();
 
-    // Initializes a window
     bool init();
     bool initOpenGLContext();
-    void setupDraw();
 
-    // Handles window events
-    void handleEvent(SDL_Event& e);
-
-    // Brings the window to focus
-    void focus();
-
-    // Releases resources
-    void free();
-
-    // Toggle Fullscreen
-    void toggleFullscreen();
-
+    void input(SDL_Event& e);
     void update();
     void render();
 
-    // Getters
+    void focus();
+    void toggleFullscreen();
+    
     int width();
     int height();
     bool hasMouseFocus();
@@ -37,7 +25,9 @@ public:
     SDL_Window* getWindow();
     SDL_GLContext& getGLContext();
 
+    void free();
 private:
+    void handleWindowEvents(SDL_Event& e);
     void initVariables();
     void initOpenGlContextSetup();
 

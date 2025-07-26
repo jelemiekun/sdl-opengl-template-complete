@@ -19,10 +19,13 @@ public:
     std::vector<Texture> textures_loaded;
     std::vector<Mesh> meshes;
     std::string directory;
+    glm::mat4 model;
     bool gammaCorrection;
 
-    Model(std::string const& path, bool gamma = false);
-    void Draw(Shader& shader, const glm::mat4& model);
+    Model(bool gamma = false);
+    void init(std::string const& path);
+    void Draw(Shader& shader, glm::mat4& model);
+    glm::mat3 getNormalMatrix();
 
 private:
     void loadModel(std::string const& path);

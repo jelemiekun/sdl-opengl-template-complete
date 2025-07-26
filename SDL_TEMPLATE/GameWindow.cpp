@@ -15,18 +15,6 @@
 
 static Game* game = Game::getInstance();
 
-static constexpr int INITIAL_WIDTH = 1280;
-static constexpr int INITIAL_HEIGHT = 720;
-
-static std::unique_ptr<Model> model1;
-static std::unique_ptr<Model> model2;
-
-static std::unique_ptr<Camera> camera;
-
-static std::unique_ptr<Shader> shaderObject;
-
-static std::unique_ptr<Shader> shaderLight;
-
 // Constructor
 GameWindow::GameWindow()
     : mWindow(nullptr), openGLContext(nullptr), mWindowID(-1),
@@ -40,8 +28,15 @@ GameWindow::~GameWindow() {
 
 // Initializes the window
 bool GameWindow::init() {
-    mWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        INITIAL_WIDTH, INITIAL_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+    mWindow = SDL_CreateWindow(
+        "SDL Tutorial", 
+        SDL_WINDOWPOS_UNDEFINED, 
+        SDL_WINDOWPOS_UNDEFINED,
+        ProgramValues::GameWindow::width, 
+        ProgramValues::GameWindow::height, 
+        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
+    );
+
     if (!mWindow) {
         spdlog::error("Window creation failed: {}", SDL_GetError());
         return false;
@@ -51,35 +46,6 @@ bool GameWindow::init() {
 
     spdlog::info("Window initialized successfully");
     return true;
-}
-
-void GameWindow::setupDraw() {
-    camera = std::make_unique<Camera>(
-        glm::vec3(0.0f, 0.0f, 3.0f),
-        glm::vec3(0.0f, 1.0f, 0.0f),
-        -90.0f,
-        0.0f
-    );
-
-    shaderObject = std::make_unique<Shader>("source.shader");
-
-    shaderLight = std::make_unique<Shader>("light.shader");
-
-    std::vector<GLfloat> verticesLight = {
-        // Position                Normal
-            -0.2f,  0.2f,  0.2f,
-             0.2f,  0.2f,  0.2f,
-            -0.2f, -0.2f,  0.2f,
-             0.2f, -0.2f,  0.2f,
-
-             -0.2f,  0.2f, -0.2f,
-              0.2f,  0.2f, -0.2f,
-             -0.2f, -0.2f, -0.2f,
-              0.2f, -0.2f, -0.2f
-    };
-
-    model1 = std::make_unique<Model>("assets/models/military_backpack/scene.gltf");
-    model2 = std::make_unique<Model>("assets/models/Donut.glb");
 }
 
 // Brings the window into focus
@@ -114,8 +80,7 @@ void GameWindow::toggleFullscreen() {
     }
 }
 
-// Handles events specific to this window
-void GameWindow::handleEvent(SDL_Event& e) {
+void GameWindow::handleWindowEvents(SDL_Event& e) {
     if (e.type == SDL_WINDOWEVENT && e.window.windowID == mWindowID) {
         switch (e.window.event) {
             case SDL_WINDOWEVENT_SHOWN:
@@ -136,7 +101,7 @@ void GameWindow::handleEvent(SDL_Event& e) {
                 break;
 
             case SDL_WINDOWEVENT_RESTORED:
-                ProgramValues::KeyEvents::isLockedIn = true;
+                ProgramValues::CameraKeyEvents::isLockedIn = true;
                 spdlog::info("Window {} restored", mWindowID);
                 break;
 
@@ -153,23 +118,31 @@ void GameWindow::handleEvent(SDL_Event& e) {
         toggleFullscreen();
         spdlog::info("Toggled fullscreen mode");
     }
+}
 
-    camera->processKeyboard(e, this);
-    camera->processMouseMotion(e);
+
+
+
+// Handles events specific to this window
+void GameWindow::input(SDL_Event& e) {
+    handleWindowEvents(e);
+    ProgramValues::Cameras::freeFly.processInput(e, this);
 }
 
 void GameWindow::update() {
-    camera->update();
+    ProgramValues::Cameras::freeFly.update();
+
+    Shader* shaderObject = &ProgramValues::Shaders::shaderObject;
 
     shaderObject->use();
-    shaderObject->setVec3("u_CameraPos", camera->position);
-    shaderObject->setFloat("material.shininess", ProgramValues::Object::shininess);
+    shaderObject->setVec3("u_CameraPos", ProgramValues::Cameras::freeFly.position);
+    shaderObject->setFloat("material.shininess", 32);
 
     { // Directional Light
         shaderObject->setVec3("dirLight.direction", -glm::vec3(0.0f, 1.0f, 0.0f));
         shaderObject->setVec3("dirLight.ambient", glm::vec3(0.08f));
         shaderObject->setVec3("dirLight.diffuse", glm::vec3(0.3f));
-        shaderObject->setVec3("dirLight.specular", glm::vec3(0.5f));
+        shaderObject->setVec3("dirLight.specular", glm::vec3(0.6f));
     }
 }
 
@@ -180,38 +153,23 @@ void GameWindow::render() {
     glEnable(GL_BLEND);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
+    Shader* shaderObject = &ProgramValues::Shaders::shaderObject;
+    Model* landscape = &ProgramValues::GameObjects::landscape;
 
-    glm::mat4 model = glm::mat4(1.0f);
-    //model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.0f));
+    landscape->model = glm::translate(landscape->model, glm::vec3(0.0f, 0.0f, -2.0f));
     shaderObject->setFloat("material.shininess", 32.0f);
-    model1->Draw(*shaderObject, model);
-    
-    
-    model = glm::mat4(1.0f);
-    //model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
-    model = glm::scale(model, glm::vec3(10.0f, 10.0f, 10.0f));
-    shaderObject->setFloat("material.shininess", 32.0f);
-    model2->Draw(*shaderObject, model);
-    
-    glm::mat4 projection = glm::perspective(
-        glm::radians(camera->getFOV()), 
-        (float)mWidth / (float)mHeight,
-        0.1f, 
-        2000.0f
-    );
-    glm::mat4 objectModel = glm::mat4(1.0f);
-
-    glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
-    
-    shaderObject->setMat4("u_Projection", projection);
-    shaderObject->setMat4("u_View", camera->getViewMatrix());
-    shaderObject->setMat3("u_NormalMatrix", normalMatrix);
+    ProgramValues::GameObjects::landscape.Draw(*shaderObject, landscape->model);
+ 
+    shaderObject->setMat4("u_Projection", ProgramValues::GameWindow::projection);
+    shaderObject->setMat4("u_View", ProgramValues::Cameras::freeFly.getViewMatrix());
+    shaderObject->setMat3("u_NormalMatrix", landscape->getNormalMatrix());
 
     game->imGuiWindow->render();
     SDL_GL_SwapWindow(mWindow);
 }
+
+
+
 
 // Getters
 int GameWindow::width() { return mWidth; }
@@ -232,13 +190,13 @@ SDL_GLContext& GameWindow::getGLContext() {
 void GameWindow::initVariables() {
     mMouseFocus = mKeyboardFocus = true;
     mShown = true;
-    mWidth = INITIAL_WIDTH;
-    mHeight = INITIAL_HEIGHT;
+    mWidth = ProgramValues::GameWindow::width;
+    mHeight = ProgramValues::GameWindow::height;
     mWindowID = SDL_GetWindowID(mWindow);
 }
 
 void GameWindow::initOpenGlContextSetup() {
-    glViewport(0, 0, 1280, 720);
+    glViewport(0, 0, ProgramValues::GameWindow::width, ProgramValues::GameWindow::height);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

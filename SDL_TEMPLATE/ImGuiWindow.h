@@ -13,7 +13,7 @@ public:
 
     static ImGuiWindow* getInstance();
 
-    void init(SDL_Window* window, SDL_GLContext glContext) const;
+    bool init(SDL_Window* window, SDL_GLContext glContext) const;
     void render();
     void clean();
 };

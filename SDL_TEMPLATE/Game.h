@@ -27,18 +27,25 @@ public:
     ImGuiWindow* imGuiWindow;
 
 private:
-    void setOpenGLAttributes();
+    void initializeEverything();
 
     bool initSDL();
+    bool initGameWindow();
+    bool setOpenGLAttributes();
     bool initGLAD();
-    void initImGui();
+    bool initImGui();
+    void initShaders();
+    void initModels();
+    void initCamera();
+    void initFOVProjection();
 
-public:
-    void initializeEverything();
+    void gameLoop();
 
     void input();
     void update();
     void render();
+public:
+    void run();
 
     const bool& isRunning() const;
     void setRunning(bool value);

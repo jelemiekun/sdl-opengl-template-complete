@@ -38,7 +38,7 @@ void Mesh::setupMesh() {
 }
 
 
-void Mesh::Draw(Shader& shader, const glm::mat4& model) {
+void Mesh::Draw(Shader& shader, glm::mat4& model) {
 	int diffuseNum = 0;
 	int specularNum = 0;
 	// Binds all the textures to their own texture units and sets the respective uniforms in the fragment shader
@@ -62,4 +62,6 @@ void Mesh::Draw(Shader& shader, const glm::mat4& model) {
 	glBindVertexArray(vao);
 	// Resets the active texture unit
 	glActiveTexture(GL_TEXTURE0);
+
+	model = glm::mat4(1.0f);
 }
