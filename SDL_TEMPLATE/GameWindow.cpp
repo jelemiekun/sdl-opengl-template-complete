@@ -160,6 +160,7 @@ void GameWindow::render() {
     landscape->model = glm::translate(landscape->model, glm::vec3(0.0f, 0.0f, -2.0f));
     shaderObject->setFloat("material.shininess", 32.0f);
     ProgramValues::GameObjects::cube.Draw(*shaderObject, landscape->model);
+    landscape->model = glm::mat4(1.0f);
  
     shaderObject->setMat4("u_Projection", ProgramValues::GameWindow::projection);
     shaderObject->setMat4("u_View", ProgramValues::Cameras::freeFly.getViewMatrix());
