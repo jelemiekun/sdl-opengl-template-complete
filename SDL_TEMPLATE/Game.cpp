@@ -101,7 +101,7 @@ void Game::initFOVProjection() {
         glm::radians(ProgramValues::Cameras::freeFly.fov),
         (float)gameWindow->width() / (float)gameWindow->height(),
         1.0f,
-        100.0f
+        10000.0f
     );
 }
 

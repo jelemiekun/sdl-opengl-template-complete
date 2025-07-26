@@ -140,15 +140,16 @@ void GameWindow::update() {
 
     { // Directional Light
         shaderObject->setVec3("dirLight.direction", -glm::vec3(0.0f, 1.0f, 0.0f));
-        shaderObject->setVec3("dirLight.ambient", glm::vec3(0.08f));
-        shaderObject->setVec3("dirLight.diffuse", glm::vec3(0.3f));
-        shaderObject->setVec3("dirLight.specular", glm::vec3(0.6f));
+        shaderObject->setVec3("dirLight.ambient", glm::vec3(0.4f));
+        shaderObject->setVec3("dirLight.diffuse", glm::vec3(0.4f));
+        shaderObject->setVec3("dirLight.specular", glm::vec3(0.8f));
     }
 }
 
 void GameWindow::render() {
     // TODO: bawat object/model may sariling mat4 transformation
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.3f, 0.3f, 0.5f, 1.0f);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -199,7 +200,6 @@ void GameWindow::initOpenGlContextSetup() {
     glViewport(0, 0, ProgramValues::GameWindow::width, ProgramValues::GameWindow::height);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 bool GameWindow::initOpenGLContext() {

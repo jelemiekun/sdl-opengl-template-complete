@@ -62,6 +62,4 @@ void Mesh::Draw(Shader& shader, glm::mat4& model) {
 	glBindVertexArray(vao);
 	// Resets the active texture unit
 	glActiveTexture(GL_TEXTURE0);
-
-	model = glm::mat4(1.0f);
 }
