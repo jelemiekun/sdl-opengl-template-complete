@@ -105,6 +105,10 @@ void Game::initFOVProjection() {
     );
 }
 
+void Game::disableVSync() {
+    SDL_GL_SetSwapInterval(0);
+}
+
 void Game::initializeEverything() {
     spdlog::info("Initializing program...");
 
@@ -118,6 +122,7 @@ void Game::initializeEverything() {
     if (initializationSuccess) {
         spdlog::info("Program initialized successfully.");
 
+        // disableVSync(); Disable monitor's fresh rate limit
         initShaders();
         initModels();
         initCamera();
