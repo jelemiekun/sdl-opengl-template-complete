@@ -154,11 +154,11 @@ void GameWindow::render() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
     Shader* shaderObject = &ProgramValues::Shaders::shaderObject;
-    Model* landscape = &ProgramValues::GameObjects::landscape;
+    Model* landscape = &ProgramValues::GameObjects::cube;
 
     landscape->model = glm::translate(landscape->model, glm::vec3(0.0f, 0.0f, -2.0f));
     shaderObject->setFloat("material.shininess", 32.0f);
-    ProgramValues::GameObjects::landscape.Draw(*shaderObject, landscape->model);
+    ProgramValues::GameObjects::cube.Draw(*shaderObject, landscape->model);
  
     shaderObject->setMat4("u_Projection", ProgramValues::GameWindow::projection);
     shaderObject->setMat4("u_View", ProgramValues::Cameras::freeFly.getViewMatrix());

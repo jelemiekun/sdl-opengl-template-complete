@@ -58,7 +58,7 @@ namespace ProgramValues {
 	}
 
 	namespace GameObjects {
-		extern Model landscape;
+		extern Model cube;
 	}
 
 	namespace CameraKeyEvents {

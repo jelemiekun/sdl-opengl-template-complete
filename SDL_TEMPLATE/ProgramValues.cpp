@@ -30,7 +30,7 @@ namespace ProgramValues {
 	}
 
 	namespace GameObjects {
-		Model landscape;
+		Model cube;
 	}
 
 	namespace CameraKeyEvents {

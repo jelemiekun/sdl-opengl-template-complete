@@ -45,6 +45,7 @@ bool Game::initGameWindow() {
 
     if (gameWindow->init()) {
         spdlog::info("gameWindow initialized successfully.");
+        return true;
     } else {
         spdlog::error("gameWindow failed to initialize.");
         return false;
@@ -77,9 +78,9 @@ void Game::initShaders() {
 void Game::initModels() {
     spdlog::info("Initializing models...");
 
-    ProgramValues::GameObjects::landscape.init("assets/models/Scene.glb");
+    ProgramValues::GameObjects::cube.init("assets/models/Geometry_Nodes.glb");
 
-    spdlog::info("Models initialized successfully.");
+    spdlog::info("Models initialized successsfully.");
 }
 
 void Game::initCamera() {
