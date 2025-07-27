@@ -83,7 +83,7 @@ void Game::initModels() {
     spdlog::info("Models initialized successsfully.");
 }
 
-void Game::initCamera() {
+void Game::initCameras() {
     spdlog::info("Initializing cameras...");
 
     ProgramValues::Cameras::freeFly.init(
@@ -110,8 +110,9 @@ void Game::disableVSync() {
 }
 
 void Game::preTransformModels() {
-    // Pretransform models  here;
-    ProgramValues::GameObjects::cube.scale = 10.f;
+    // Pretransform models here;
+    ProgramValues::GameObjects::cube.scale = 100.f;
+    ProgramValues::GameObjects::cube.updateModelMatrix();
 }
 
 void Game::initializeEverything() {
@@ -128,10 +129,12 @@ void Game::initializeEverything() {
         spdlog::info("Program initialized successfully.");
 
         // disableVSync(); Disable monitor's fresh rate limit
+        gameWindow->initOpenGlContextSetup();
         initShaders();
         initModels();
-        initCamera();
+        initCameras();
         initFOVProjection();
+        preTransformModels();
 
         running = true;
     } else {

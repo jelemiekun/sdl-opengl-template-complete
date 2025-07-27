@@ -147,11 +147,8 @@ void GameWindow::update() {
 }
 
 void GameWindow::render() {
-    // TODO: bawat object/model may sariling mat4 transformation
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.3f, 0.3f, 0.5f, 1.0f);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
     Shader* shaderObject = &ProgramValues::Shaders::shaderObject;

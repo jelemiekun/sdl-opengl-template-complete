@@ -36,7 +36,7 @@ private:
     bool initImGui();
     void initShaders();
     void initModels();
-    void initCamera();
+    void initCameras();
     void initFOVProjection();
     
     void disableVSync();
